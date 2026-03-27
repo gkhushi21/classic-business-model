@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.businessmodel</groupId>
-    <artifactId>classic-business-model</artifactId>
+     <artifactId>classic-business-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>classic-business-model</name>
     <description>classic-business-model</description>
@@ -68,6 +68,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 
