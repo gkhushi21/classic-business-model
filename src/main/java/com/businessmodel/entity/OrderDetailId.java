@@ -5,15 +5,15 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class OrderDetailPK implements Serializable {
+public class OrderDetailId implements Serializable {
 
     private Integer orderNumber;
     private String productCode;
 
-    public OrderDetailPK() {
+    public OrderDetailId() {
     }
 
-    public OrderDetailPK(Integer orderNumber, String productCode) {
+    public OrderDetailId(Integer orderNumber, String productCode) {
         this.orderNumber = orderNumber;
         this.productCode = productCode;
     }
@@ -37,8 +37,8 @@ public class OrderDetailPK implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrderDetailPK)) return false;
-        OrderDetailPK that = (OrderDetailPK) o;
+        if (!(o instanceof OrderDetailId)) return false;
+        OrderDetailId that = (OrderDetailId) o;
         return Objects.equals(orderNumber, that.orderNumber) &&
                 Objects.equals(productCode, that.productCode);
     }
