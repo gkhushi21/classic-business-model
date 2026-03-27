@@ -94,7 +94,6 @@ public class Order {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-
 	public Customer getCustomer() {
 		return customer;
 	}
