@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class OrderDetail {
 
     @EmbeddedId
-    private OrderDetailPK id;
+    private OrderDetailId id;
 
     @Column(nullable = false)
     private Integer quantityOrdered;
@@ -31,7 +31,7 @@ public class OrderDetail {
     public OrderDetail() {
     }
 
-    public OrderDetail(OrderDetailPK id, Integer quantityOrdered, Double priceEach, Short orderLineNumber, Order order, Product product) {
+    public OrderDetail(OrderDetailId id, Integer quantityOrdered, Double priceEach, Short orderLineNumber, Order order, Product product) {
         this.id = id;
         this.quantityOrdered = quantityOrdered;
         this.priceEach = priceEach;
@@ -40,11 +40,11 @@ public class OrderDetail {
         this.product = product;
     }
 
-    public OrderDetailPK getId() {
+    public OrderDetailId getId() {
         return id;
     }
 
-    public void setId(OrderDetailPK id) {
+    public void setId(OrderDetailId id) {
         this.id = id;
     }
 

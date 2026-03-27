@@ -7,33 +7,36 @@ import java.time.LocalDate;
 @Table(name = "payments")
 public class Payment {
 
-    @Id
-    private String checkNumber;
+    @EmbeddedId
+    private PaymentId id;
 
-    // Foreign Key Mapping
     @ManyToOne
-    @JoinColumn(name = "customerNumber", nullable = false)
+    @MapsId("customerNumber")
+    @JoinColumn(name = "customerNumber")
     private Customer customer;
+
+    @Column(name = "paymentDate", nullable = false)
     private LocalDate paymentDate;
+
+    @Column(name = "amount", nullable = false)
     private Double amount;
 
     public Payment() {
     }
 
-    public Payment(Double amount, String checkNumber, Customer customer, LocalDate paymentDate) {
+    public Payment(Double amount, Customer customer, PaymentId id, LocalDate paymentDate) {
         this.amount = amount;
-        this.checkNumber = checkNumber;
         this.customer = customer;
+        this.id = id;
         this.paymentDate = paymentDate;
     }
-    // Getters and Setters
 
-    public String getCheckNumber() {
-        return checkNumber;
+    public PaymentId getId() {
+        return id;
     }
 
-    public void setCheckNumber(String checkNumber) {
-        this.checkNumber = checkNumber;
+    public void setId(PaymentId id) {
+        this.id = id;
     }
 
     public Customer getCustomer() {
