@@ -3,7 +3,7 @@ package com.businessmodel.service.impl;
 import com.businessmodel.dto.*;
 import com.businessmodel.entity.*;
 import com.businessmodel.repository.*;
-import com.businessmodel.service.IOrderService;
+import com.businessmodel.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements IOrderService {
+public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo orderRepo;
     private final CustomerRepo customerRepo;
