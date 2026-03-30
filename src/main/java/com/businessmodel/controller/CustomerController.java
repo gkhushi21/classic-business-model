@@ -1,4 +1,4 @@
-package com.businessmodel.api;
+package com.businessmodel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

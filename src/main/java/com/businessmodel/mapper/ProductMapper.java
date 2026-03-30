@@ -17,7 +17,7 @@ public class ProductMapper {
         product.setProductVendor(dto.getProductVendor());
         product.setQuantityInStock(dto.getQuantityInStock());
         product.setBuyPrice(dto.getBuyPrice());
-        product.setMSRP(dto.getMsrp());
+        product.setMsrp(dto.getMsrp());
 
         return product;
     }
@@ -33,7 +33,7 @@ public class ProductMapper {
                 .productVendor(product.getProductVendor())
                 .quantityInStock(product.getQuantityInStock())
                 .buyPrice(product.getBuyPrice())
-                .msrp(product.getMSRP())
+                .msrp(product.getMsrp())
                 .build();
     }
 
@@ -46,6 +46,6 @@ public class ProductMapper {
         product.setProductVendor(dto.getProductVendor());
         product.setQuantityInStock(dto.getQuantityInStock());
         product.setBuyPrice(dto.getBuyPrice());
-        product.setMSRP(dto.getMsrp());
+        product.setMsrp(dto.getMsrp());
     }
 }

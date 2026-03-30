@@ -1,5 +1,8 @@
 package com.businessmodel.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.List;
 
@@ -9,9 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 public class SupportDto {
 
-    private Integer customerNumber;
-    private String customerName;
-    private String phone;
-    private String country;
-    private List<ProductDto> orderedProducts;
+    @NotNull
+    @NotBlank
+    private String firstName;
+    @NotNull
+    @NotBlank
+    private String lastName;
+    @NotNull
+    @Email
+    private String email;
+    @NotNull
+    private String jobTitle;
 }

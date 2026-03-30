@@ -11,5 +11,6 @@ import java.util.List;
 public interface OrderRepo extends JpaRepository<Order, Integer> {
     List<Order> findByStatus(String status);
     List<Order> findByCustomer(Customer customer);
-    List<Order> findByCustomer_CustomerNumberAndStatus(int customerNumber, String status);
+    List<Order> findByCustomer_CustomerNumberAndStatus(Integer customerNumber, String status);
+    List<Order> findByCustomer_CustomerNumber(Integer customerNumber);
 }

@@ -1,8 +1,11 @@
 package com.businessmodel.dto;
 
+import com.businessmodel.entity.ProductLine;
 import lombok.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -18,7 +21,7 @@ public class ProductDto {
     private String productName;
 
     @NotBlank(message = "Product line is required")
-    private String productLine;
+    private ProductLine productLine;
 
     @NotBlank(message = "Product scale is required")
     private String productScale;
@@ -27,11 +30,11 @@ public class ProductDto {
     private String productVendor;
 
     @NotNull(message = "Quantity is required")
-    private int quantityInStock;
+    private Short quantityInStock;
 
     @NotNull(message = "Buy price is required")
-    private double buyPrice;
+    private BigDecimal buyPrice;
 
     @NotNull(message = "MSRP is required")
-    private double msrp;
+    private BigDecimal msrp;
 }
