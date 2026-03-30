@@ -3,7 +3,7 @@ package com.businessmodel.mapper;
 import com.businessmodel.dto.CustomerDto;
 import com.businessmodel.entity.Customer;
 
-public class CustomerEntityMapper {
+public class CustomerMapper {
 
     public static Customer toCustomerEntity(CustomerDto dto) {
         Customer customer = new Customer();

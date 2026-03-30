@@ -7,9 +7,11 @@ import com.businessmodel.dto.SupportDto;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 public interface CustomerService {
 	
-	List<CustomerDto> getCustomersByCountry(String country);
+	Page<CustomerDto> getCustomersByCountry(String country, int page, int size);
 	List<CustomerDto> getTopCustomers();
 	List<OrderDto> getOrdersByCustomer(Integer customerId);
 	List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status);
