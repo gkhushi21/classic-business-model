@@ -1,12 +1,13 @@
+
 package com.businessmodel.service.impl;
 
 import com.businessmodel.dto.CustomerDto;
 import com.businessmodel.dto.OrderDto;
-import com.businessmodel.service.ICustomerService;
+import com.businessmodel.service.CustomerService;
 
 import java.util.List;
 
-public class CustomerServiceImpl implements ICustomerService {
+public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDto> getCustomersByCountry(String country) {
         return List.of();
@@ -23,7 +24,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public List<OrderDto> getOrderByCustomerIdAndStatus(Integer customerId, String status) {
+    public List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status) {
         return List.of();
     }
 

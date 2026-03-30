@@ -5,7 +5,7 @@ import com.businessmodel.dto.OrderWithDetailsDto;
 
 import java.util.List;
 
-public interface IOrderService {
+public interface OrderService {
 
     List<OrderDto> getOrdersByStatus(String status);
 
