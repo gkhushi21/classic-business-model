@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.*;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +17,15 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepo orderRepo;
     private final CustomerRepo customerRepo;
     private final OrderDetailRepo orderDetailRepo;
+
+    @Override
+    public Page<OrderDto> getOrdersByCustomer(Integer customerId, int page, int size) {
+        Customer customer = customerRepo.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orderPage = orderRepo.findByCustomer(customer, pageable);
+        return orderPage.map(this::convertToDTO);
+    }
 
     @Override
     public List<OrderDto> getOrdersByStatus(String status) {
