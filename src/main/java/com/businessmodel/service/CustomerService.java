@@ -15,6 +15,5 @@ public interface CustomerService {
 	List<CustomerDto> getTopCustomers(int page, int size);
 	List<OrderDto> getOrdersByCustomer(Integer customerId);
 	List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status);
-	AmountDto getTotalPaymentAmount(Integer customerId);
 	SupportDto getCustomerSupport(Integer customerId);
 }
