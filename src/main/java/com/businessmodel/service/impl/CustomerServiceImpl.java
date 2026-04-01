@@ -4,6 +4,8 @@ import com.businessmodel.dto.*;
 import com.businessmodel.entity.Customer;
 import com.businessmodel.entity.Employee;
 import com.businessmodel.entity.Order;
+import com.businessmodel.exception.BadRequestException;
+import com.businessmodel.exception.ResourceNotFoundException;
 import com.businessmodel.mapper.AmountMapper;
 import com.businessmodel.mapper.CustomerMapper;
 import com.businessmodel.mapper.OrderMapper;
@@ -33,25 +35,36 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private PaymentRepo paymentRepo;
 
-    @Override
-    public Page<CustomerDto> getCustomersByCountry(String country, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Customer> customerPage =
-                customerRepo.findByCountry(country, pageable);
-        return customerPage.map(CustomerMapper::toCustomerDto);
-    }
-    
-    @Override
-    public List<CustomerDto> getTopCustomers(int page, int size) {
+	@Override
+	public Page<CustomerDto> getCustomersByCountry(String country, int page, int size) {
+		if (country == null || country.isBlank()) {
+			throw new BadRequestException("Country cannot be empty");
+		}
+		if (page < 0 || size <= 0) {
+			throw new BadRequestException("Invalid pagination parameters");
+		}
+		Pageable pageable = PageRequest.of(page, size);
 
-        Pageable pageable = PageRequest.of(page, size);
+		Page<Customer> customerPage = customerRepo.findByCountry(country, pageable);
+		if (customerPage.isEmpty()) {
+			throw new ResourceNotFoundException("No customers found for country: " + country);
+		}
+		return customerPage.map(CustomerMapper::toCustomerDto);
+	}
 
-        return customerRepo.findAllByOrderByCreditLimitDesc(pageable)
-                .getContent()
-                .stream()
-                .map(CustomerMapper::toCustomerDto)
-                .toList();
-    }
+	@Override
+	public List<CustomerDto> getTopCustomers(int page, int size) {
+		if (page < 0 || size <= 0) {
+			throw new BadRequestException("Invalid pagination parameters");
+		}
+		Pageable pageable = PageRequest.of(page, size);
+		List<CustomerDto> customers = customerRepo.findAllByOrderByCreditLimitDesc(pageable).getContent().stream()
+				.map(CustomerMapper::toCustomerDto).toList();
+		if (customers.isEmpty()) {
+			throw new ResourceNotFoundException("No top customers found");
+		}
+		return customers;
+	}
 
 	@Override
 	public List<OrderDto> getOrdersByCustomer(Integer customerId) {
@@ -68,7 +81,6 @@ public class CustomerServiceImpl implements CustomerService {
 		orders.forEach(o -> orderDto.add(OrderMapper.toOrderDto(o)));
 		return orderDto;
 	}
-
 
 	@Override
 	public SupportDto getCustomerSupport(Integer customerId) {
