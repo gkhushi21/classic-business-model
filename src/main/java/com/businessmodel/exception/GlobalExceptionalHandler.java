@@ -12,21 +12,18 @@ import java.time.LocalDate;
 @RestControllerAdvice
 public class GlobalExceptionalHandler {
 
-    @ResponseBody
     @ExceptionHandler({ResourceNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto handleException(ResourceNotFoundException e, HttpServletRequest request) {
         return new ErrorDto(e.getMessage(), HttpStatus.NOT_FOUND.value(),LocalDate.now(),request.getRequestURI());
     }
 
-    @ResponseBody
     @ExceptionHandler({BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto handleException(BusinessException e, HttpServletRequest request) {
       return new ErrorDto(e.getMessage(), HttpStatus.BAD_REQUEST.value(),LocalDate.now(),request.getRequestURI());
     }
-
-    @ResponseBody
+    
     @ExceptionHandler({BadRequestException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto handleException(BadRequestException e, HttpServletRequest request) {

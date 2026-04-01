@@ -4,6 +4,8 @@ import com.businessmodel.dto.*;
 import com.businessmodel.entity.Customer;
 import com.businessmodel.entity.Employee;
 import com.businessmodel.entity.Order;
+import com.businessmodel.exception.BusinessException;
+import com.businessmodel.exception.ResourceNotFoundException;
 import com.businessmodel.mapper.AmountMapper;
 import com.businessmodel.mapper.CustomerMapper;
 import com.businessmodel.mapper.OrderMapper;
@@ -55,14 +57,16 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<OrderDto> getOrdersByCustomer(Integer customerId) {
+		Customer customer= customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
 		List<Order> orders = orderRepo.findByCustomer_CustomerNumber(customerId);
 		List<OrderDto> orderDto = new ArrayList<>();
-		orders.forEach(o -> OrderMapper.toOrderDto(o));
+		orders.forEach(o -> orderDto.add(OrderMapper.toOrderDto(o)));
 		return orderDto;
 	}
 
 	@Override
 	public List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status) {
+		Customer customer= customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
 		List<Order> orders = orderRepo.findByCustomer_CustomerNumberAndStatus(customerId, status);
 		List<OrderDto> orderDto = new ArrayList<>();
 		orders.forEach(o -> orderDto.add(OrderMapper.toOrderDto(o)));
@@ -72,8 +76,11 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public SupportDto getCustomerSupport(Integer customerId) {
-		Customer customer = customerRepo.findById(customerId).get();
+		Customer customer = customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
 		Employee emp = customer.getSalesRep();
+		if(emp == null) {
+			throw new BusinessException("No support assigned to this customer");
+		}
 		return SupportMapper.toSupportDto(emp);
 	}
 
