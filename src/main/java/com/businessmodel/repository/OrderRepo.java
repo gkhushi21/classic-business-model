@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 @Repository
 public interface OrderRepo extends JpaRepository<Order, Integer> {
 
-    List<Order> findByStatus(String status);
-    List<Order> findByCustomer(Customer customer);
+    Page<Order> findByStatus(String status, Pageable pageable);
+    Page<Order> findByCustomer(Customer customer, Pageable pageable);
     List<Order> findByCustomer_CustomerNumberAndStatus(Integer customerNumber, String status);
     List<Order> findByCustomer_CustomerNumber(Integer customerNumber);
 }

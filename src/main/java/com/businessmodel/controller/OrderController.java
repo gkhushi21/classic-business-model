@@ -26,8 +26,11 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getOrdersByStatus(@RequestParam(required = false) String status) {
-        return  new ResponseEntity<>(orderService.getOrdersByStatus(status), HttpStatus.OK);
+    public Page<OrderDto> getOrdersByStatus(@RequestParam String status,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size
+    ) {
+        return orderService.getOrdersByStatus(status, page,size);
     }
 
 }

@@ -41,8 +41,10 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/orders")
-    public ResponseEntity<List<OrderDto>> getOrdersByCustomer(@PathVariable Integer id) {
-        return new ResponseEntity<>(orderService.getOrdersByCustomer(id), HttpStatus.OK);
+    public Page<OrderDto> getOrdersByCustomer(@PathVariable Integer id,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int size) {
+        return customerService.getOrdersByCustomer(id,page, size);
     }
 
 

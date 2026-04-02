@@ -5,6 +5,7 @@ import com.businessmodel.entity.ProductLine;
 import com.businessmodel.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductDto>> findProductsByProductLine(@RequestParam ProductLine productLine) {
-        return new  ResponseEntity<>(productService.findProductsByProductLine(productLine), HttpStatus.OK);
+    public Page<ProductDto> findProductsByProductLine(@RequestParam ProductLine productLine,
+                                                      @RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size) {
+        return productService.findProductsByProductLine(productLine,page,size);
     }
 
 }

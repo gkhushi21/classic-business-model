@@ -7,7 +7,6 @@ import com.businessmodel.entity.Order;
 import com.businessmodel.exception.BadRequestException;
 import com.businessmodel.exception.BusinessException;
 import com.businessmodel.exception.ResourceNotFoundException;
-import com.businessmodel.mapper.AmountMapper;
 import com.businessmodel.mapper.CustomerMapper;
 import com.businessmodel.mapper.OrderMapper;
 import com.businessmodel.mapper.SupportMapper;
@@ -45,11 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BadRequestException("Invalid pagination parameters");
         }
         Pageable pageable = PageRequest.of(page, size);
-
         Page<Customer> customerPage = customerRepo.findByCountry(country, pageable);
-        if (customerPage.isEmpty()) {
-            throw new ResourceNotFoundException("No customers found for country: " + country);
-        }
         return customerPage.map(CustomerMapper::toCustomerDto);
     }
 
@@ -59,26 +54,30 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BadRequestException("Invalid pagination parameters");
         }
         Pageable pageable = PageRequest.of(page, size);
-        List<CustomerDto> customers = customerRepo.findAllByOrderByCreditLimitDesc(pageable).getContent().stream()
-                .map(CustomerMapper::toCustomerDto).toList();
-        if (customers.isEmpty()) {
-            throw new ResourceNotFoundException("No top customers found");
+        Page<Customer> customerPage = customerRepo.findAllByOrderByCreditLimitDesc(pageable);
+        List<CustomerDto> list=new ArrayList<>();
+        for(Customer c:customerPage.getContent()) {
+            list.add(CustomerMapper.toCustomerDto(c));
         }
-        return customers;
+        return list;
     }
 
     @Override
-    public List<OrderDto> getOrdersByCustomer(Integer customerId) {
-        Customer customer= customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
-        List<Order> orders = orderRepo.findByCustomer_CustomerNumber(customerId);
-        List<OrderDto> orderDto = new ArrayList<>();
-        orders.forEach(o -> orderDto.add(OrderMapper.toOrderDto(o)));
-        return orderDto;
+    public Page<OrderDto> getOrdersByCustomer(Integer customerId, int page, int size) {
+        if (page < 0 || size <= 0) {
+            throw new BadRequestException("Invalid pagination parameters");
+        }
+        Customer customer= customerRepo.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Order> orderPage=orderRepo.findByCustomer(customer,pageable);
+        return orderPage.map(order ->  OrderMapper.toOrderDto(order));
     }
 
     @Override
     public List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status) {
-        Customer customer= customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
+        Customer customer= customerRepo.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
         List<Order> orders = orderRepo.findByCustomer_CustomerNumberAndStatus(customerId, status);
         List<OrderDto> orderDto = new ArrayList<>();
         orders.forEach(o -> orderDto.add(OrderMapper.toOrderDto(o)));
@@ -87,7 +86,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public SupportDto getCustomerSupport(Integer customerId) {
-        Customer customer = customerRepo.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
+        Customer customer = customerRepo.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + customerId + " not found"));
         Employee emp = customer.getSalesRep();
         if(emp == null) {
             throw new BusinessException("No support assigned to this customer");

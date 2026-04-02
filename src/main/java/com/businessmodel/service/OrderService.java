@@ -5,10 +5,11 @@ import com.businessmodel.dto.OrderWithDetailsDto;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
-    List<OrderDto> getOrdersByStatus(String status);
-    List<OrderDto> getOrdersByCustomerId(Integer customerId);
+    Page<OrderDto> getOrdersByStatus(String status, int page, int size);
+    //    List<OrderDto> getOrdersByCustomerId(Integer customerId);
     OrderWithDetailsDto getOrderWithDetails(Integer orderId);
-    List<OrderDto> getOrdersByCustomer(Integer customerId);
+//    List<OrderDto> getOrdersByCustomer(Integer customerId);
 }

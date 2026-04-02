@@ -13,7 +13,7 @@ public interface CustomerService {
 
     Page<CustomerDto> getCustomersByCountry(String country, int page, int size);
     List<CustomerDto> getTopCustomers(int page, int size);
-    List<OrderDto> getOrdersByCustomer(Integer customerId);
+    Page<OrderDto> getOrdersByCustomer(Integer customerId, int page, int size);
     List<OrderDto> getOrdersByCustomerIdAndStatus(Integer customerId, String status);
     SupportDto getCustomerSupport(Integer customerId);
 }
