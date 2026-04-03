@@ -51,6 +51,33 @@ class CustomerServiceImplTest {
     private CustomerServiceImpl customerService;
 
     @Test
+    void testGetCustomerByCountrySuccess(){
+        when(customerRepo.findByCountry(eq("USA"), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Customer())));
+        final Page<CustomerDto> result=customerService.getCustomersByCountry("USA",0,10);
+        assertFalse(result.isEmpty());
+    }
+    @Test
+    void testGetCustomerByCountryFail(){
+        assertThrows(BadRequestException.class,
+                ()->customerService.getCustomersByCountry("",0,10));
+    }
+
+
+    @Test
+    void testGetTopCustomersSuccess(){
+        when(customerRepo.findAllByOrderByCreditLimitDesc(any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(new Customer())));
+        final List<CustomerDto> result=customerService.getTopCustomers(0,10);
+        assertEquals(1,result.size());
+    }
+    @Test
+    void testGetTopCustomersFail(){
+        assertThrows(BadRequestException.class,
+                ()->customerService.getTopCustomers(-1,0));
+    }
+    
+    @Test
     void testGetOrdersByCustomerIdAndStatusSuccess(){
         final Customer customer = new Customer();
         customer.setCustomerName("Test");
